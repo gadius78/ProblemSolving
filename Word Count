@@ -1,0 +1,28 @@
+#include<iostream>
+#include<string>
+#include<cstring>
+#include<cstdlib>
+#include<cstdio>
+#include<sstream>
+
+using namespace std;
+int main(){
+	int count=0;
+	string input;
+	getline(cin,input);
+	
+	
+	string buf;
+	stringstream ss(input);
+	
+	
+	while(ss >> buf){
+		count++;
+	}
+	
+	
+	cout << count <<endl;
+	return 0;
+}
+
+// word count (in sentence)
