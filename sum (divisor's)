@@ -1,0 +1,25 @@
+#include<iostream>
+using namespace std;
+
+int sumDivisor(int n)
+{
+  int temp=n;
+  int sum=0;
+  while(temp>0){
+  	if(n%temp == 0){
+  			sum = sum + temp;  	
+    }
+    temp = temp-1;
+  }
+	return sum;
+}
+
+int main()
+{
+	int testCase = 10;
+	int testAnswer = sumDivisor(testCase);
+
+	cout<<testAnswer;
+}
+
+//sum (divisor's)
