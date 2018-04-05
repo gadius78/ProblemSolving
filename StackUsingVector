@@ -1,0 +1,64 @@
+#include <iostream>
+#include <cstdio>
+#include <cstdlib>
+#include <fstream>
+#include <string>
+#include <vector>
+using namespace std;
+
+vector<int> a; 
+
+int main(){
+	// stack;
+	int i=0; // 반복자
+	int j=0; // 명령의 수
+	
+	string command; // 명령
+	int input=0;
+
+	scanf("%d\n",&j);
+
+	while(i<j){
+		cin >> command;
+		if(command=="push"){
+			scanf("%d",&input);
+			a.push_back(input);
+		}
+		else if(command=="empty"){
+			if(a.empty()==true){
+				cout<< "1" << '\n';
+			}
+			else{
+				cout << "0" << '\n';
+			}
+		}
+		else if(command=="pop"){
+			if(a.empty()==true){
+				cout<< "-1" << endl;
+			}
+			else{
+				scanf("%d",&input);
+				cout << a.back() << endl;
+				a.pop_back();
+			}
+		
+		}
+		else if(command=="top"){
+			if(a.empty()==true){
+				cout<< "-1" << '\n';
+			}
+			else{
+				cout << a.back() << endl;
+			}
+			
+		}
+		else if(command=="size"){
+			cout << a.size() <<'\n';
+		}
+		else{
+			cout<< "명령어를 다시 입력하세요" << '\n';
+		}
+		i++;
+	}
+
+}
