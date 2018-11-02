@@ -1,0 +1,184 @@
+#include<iostream>
+ 
+#include<cstdlib> 
+ 
+#include<cstdio>
+ 
+#include<queue>
+ 
+using namespace std;
+queue<int> q;
+ 
+int N,M;
+ 
+int map[1001][1001]; 
+int record[1001][1001];
+    
+ 
+ 
+void bfs(int x, int y){
+ 
+    q.push(x);
+    q.push(y);
+ 
+ 
+    int currentx;
+    int currenty;
+ 
+    while(!q.empty()){
+ 
+ 
+ 
+        
+        currentx=q.front();
+        q.pop();        
+        currenty=q.front();
+        q.pop();    
+        
+        
+        if(map[currentx][currenty]==0){
+            map[currentx][currenty] =1;
+            record[currentx][currenty]=0;
+        }    
+                
+    
+        if(currentx-1 >= 0 && map[currentx-1][currenty]==0){
+ 
+            q.push(currentx-1);
+            q.push(currenty);
+            record[currentx-1][currenty]= record[currentx][currenty]+1;
+            map[currentx-1][currenty] = 1;
+            
+ 
+        }    
+ 
+        if(currenty-1 >= 0 && map[currentx][currenty-1]==0){
+ 
+            q.push(currentx);
+ 
+            q.push(currenty-1);
+            record[currentx][currenty-1]=record[currentx][currenty]+1;
+            map[currentx][currenty-1] = 1;
+        
+ 
+        }
+        
+        if(currentx+1 < N && map[currentx+1][currenty]==0){
+ 
+            q.push(currentx+1);
+ 
+            q.push(currenty);
+            record[currentx+1][currenty]=record[currentx][currenty]+1;
+            map[currentx+1][currenty] = 1;    
+ 
+        }
+        
+        
+        if(currenty+1 < M && map[currentx][currenty+1]==0){
+ 
+            q.push(currentx);
+ 
+            q.push(currenty+1);
+            record[currentx][currenty+1]=record[currentx][currenty]+1;
+            map[currentx][currenty+1] = 1;
+        
+ 
+        }
+ 
+    }
+ 
+}
+ 
+ 
+ 
+int main(){
+ 
+    
+ 
+    
+    scanf("%d %d",&N,&M);
+ 
+ 
+    
+ 
+    for(int i=0;i<N;i++){
+ 
+        for(int j=0;j<M;j++){
+ 
+            scanf("%d",&map[i][j]);
+ 
+            record[i][j] = 0;
+ 
+        }
+ 
+    }
+ 
+    
+/*
+    cout << "=-------------------------------" << endl;
+ 
+        
+ 
+    for(int i=0;i<N;i++){
+ 
+        for(int j=0;j<M;j++){
+ 
+            printf("%d ",map[i][j]);
+ 
+        
+ 
+        }
+ 
+        cout << endl;
+ 
+    }
+*/
+    
+ 
+    bfs(N-1,0);
+/*
+        cout << "=========================" << endl;
+ 
+ 
+        for(int i=0;i<N;i++){
+ 
+        for(int j=0;j<M;j++){
+ 
+            printf("%d ",map[i][j]);
+ 
+        
+ 
+        }
+ 
+        cout << endl;
+ 
+    }
+ 
+ 
+    cout << "=========================" << endl;
+ 
+    for(int i=0;i<N;i++){
+ 
+        for(int j=0;j<M;j++){
+ 
+            printf("%d      ",record[i][j]);
+ 
+        
+ 
+        }
+ 
+        cout << endl;
+ 
+    }
+ 
+    
+ 
+    
+ 
+    */
+ 
+    cout << record[0][M-1];
+ 
+    return 0;
+ 
+}
