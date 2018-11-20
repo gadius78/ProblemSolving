@@ -1,0 +1,154 @@
+#include<cstdio>
+#include<iostream>
+#include<queue>
+#include<vector>
+#include<memory.h>
+using namespace std;
+
+
+int startx,starty,endx,endy=0;
+int tempx,tempy=0;
+int maxdepth=0;
+int N=0;
+int M=0;
+
+
+int map[51][51]={0,};
+
+bool visit[51][51]={false,};
+
+struct point{
+	int x;
+	int y;
+	int cnt;
+	point(int a,int b,int c){
+		x=a;
+		y=b;
+		cnt=c;
+	}
+};
+
+int dir[4][2]={ {0,1},{0,-1},{1,0},{-1,0} };
+bool is_bound(int a,int b){
+	if(0<a && a<=N && 0<b && b<=M)
+	{
+		return true;
+	}
+	else{
+		return false;
+	}
+}
+
+void dfs(int x,int y,int cnt){
+	if(visit[x][y]) return;
+	
+	if(maxdepth<cnt) 
+	{
+		visit[x][y]=true;
+		maxdepth =cnt;	
+		startx=tempx;
+		starty=tempy;
+		endx=x;
+		endy=y;
+	
+	}
+	
+	visit[x][y]=true;
+	for(int i=0;i<4;i++){
+		int nx=x+dir[i][0];
+		int ny=y+dir[i][1];
+		if(visit[nx][ny]==false && map[nx][ny]==1 && is_bound(nx,ny)){
+			dfs(nx,ny,cnt+1);
+		}
+	}
+	
+	
+}
+
+
+queue<point> q;
+int tmax=0;
+
+void bfs(int x,int y){
+	q.push(point(x,y,0));
+	visit[x][y]=true;
+	
+	while(!q.empty()){
+		point current = q.front();
+		q.pop();
+		
+		int xx=current.x;
+		int yy=current.y;
+		int ccnt=current.cnt;
+		for(int i=0;i<4;i++){
+			int nx = xx+dir[i][0];
+			int ny = yy+dir[i][1];
+			if(!visit[nx][ny] && map[nx][ny]==1 && is_bound(nx,ny)){
+				visit[nx][ny] =true;
+				if(ccnt+1>tmax)
+				{
+					 tmax=ccnt+1;	
+				}
+				
+				
+				q.push(point(nx,ny,ccnt+1));
+			}
+		}
+		
+	}
+//	cout << tmax;
+	
+}
+
+
+int main(){
+
+	char c;
+	scanf("%d %d",&N,&M);
+	for(int i=1;i<=N;i++){
+		for(int j=1;j<=M;j++){
+			scanf(" %c",&c);
+			if(c=='W'){
+				map[i][j]=0;
+			}
+			else{
+				map[i][j]=1;
+			}	
+		}
+	}
+	for(int i=1;i<=N;i++){
+		for(int j=1;j<=M;j++){
+			if(map[i][j]==1){
+				bfs(i,j);
+				memset(visit,false,sizeof(visit));;
+			
+			}
+		}
+	}
+	
+	/*
+	cout << endl;
+	cout << endl;
+	cout << endl;
+	cout << endl;
+	cout << endl;
+	cout << endl;
+	
+	cout << map[startx][starty] << endl;
+	cout << map[endx][endy] << endl;
+	
+	cout << startx <<" " << starty <<" "<< endx <<" " << endy <<" "<<"max:"<< maxdepth << endl;
+*/
+/*
+	for(int i=1;i<=N;i++){
+		for(int j=1;j<=M;j++){
+			printf("%d ",map[i][j]);
+		}
+		puts("");
+	}
+
+	//cout << maxdepth;
+*/
+	cout << tmax;
+	return 0;
+}
