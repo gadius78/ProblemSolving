@@ -1,0 +1,108 @@
+#include<iostream>
+#include<cstdio>
+#include<vector>
+#include<algorithm>
+#include<memory.h>
+
+using namespace std;
+int map[21][21]={0,};
+bool visit[21][21]={false,};
+bool check[28]={true, };
+
+
+int dir[4] ={0,0,1,-1};
+int dir2[4] ={1,-1,0,0};
+
+vector<int> temp;
+vector<int> ans;
+
+bool isExist(int target){
+	for(int i=0;i<temp.size();i++){
+		if(temp[i] == target){
+			return 0;
+			break;
+		}
+	}	
+	
+	return 1;
+	
+}
+
+bool isRange(int x,int y,int R,int C){
+	if( x <0 || y < 0 || x>=R || y >=C )
+	{
+		return 0;	
+	}
+	else {
+		
+	}return 1;
+	
+}
+
+
+int dfs(int x,int y,int R, int C,int count){
+	
+
+	
+	
+	visit[x][y] = true;
+//	cout << "map:" << map[x][y] << endl;
+	check[map[x][y]] = false;
+	//&& check[map[x+dir[i]][y+dir2[i]]]
+//	cout << x << " / " << y << "count " << count << endl;
+	for(int i=0;i<4;i++){
+		
+	//	cout << map[x+dir[i]][y+dir2[i]] << endl;
+		if( visit[x+dir[i]][y+dir2[i]]==false&& check[map[x+dir[i]][y+dir2[i]]]  && isRange(x+dir[i],y+dir2[i],R,C) ){
+			
+			dfs(x+dir[i],y+dir2[i],R,C,count+1);	
+		}
+		
+	}
+
+	visit[x][y] =false;
+	check[map[x][y]] = true;
+
+//	cout<< count << endl;
+	ans.push_back(count);
+	
+	return 0;
+}
+
+
+int main(){
+	int R,C;
+	char t;
+	scanf("%d %d",&R,&C);
+	
+	for(int i=0;i<R;i++){
+		for(int j=0;j<C;j++){
+			scanf(" %c",&t);
+			map[i][j] = (int)t-64;
+		}
+	}
+	memset(check,true,sizeof(check));	
+	dfs(0,0,R,C,1);
+	/*
+	for(int i=0;i<R;i++){
+		for(int j=0;j<C;j++){
+			cout << map[i][j] << " ";
+		}
+		cout << endl;
+	}
+	*/
+	/*
+	for(int i=1;i<28;i++){
+		cout << i << " " << check[i] << endl;
+	}
+*/
+	
+	int aa = *max_element(ans.begin(),ans.end());
+	cout << aa;
+	/*
+	t = 'A';
+	map[0][0] =(int)t-64;
+	printf("%d\n",map[0][0]);
+	*/
+	return 0;
+}
