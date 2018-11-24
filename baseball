@@ -1,0 +1,127 @@
+#include<cstdio>
+#include<iostream>
+#include<cstdlib>
+#include<memory.h>
+using namespace std;
+
+int arr[1000];
+
+#if 0
+
+void checkStrike(int target, int temp){
+	int a1 = target / 100;
+	int b1 = temp / 100;
+	int a2 = (target-a1*100)/10;
+	int b2 = (temp-b1*100)/10;
+	int a3 = (target-a1*100)%10;
+	int b3 =  (temp-b1*100)%10;
+	
+	cout << a1 << endl;
+	cout << a2 << endl;
+	cout << a3 << endl;
+	cout << b1 << endl;
+	cout << b2 << endl;
+	cout << b3 << endl;
+}
+#endif
+
+int checkStrike(int target, int temp){
+	int a1 = target / 100;
+	int b1 = temp / 100;
+	int a2 = (target-a1*100)/10;
+	int b2 = (temp-b1*100)/10;
+	int a3 = (target-a1*100)%10;
+	int b3 =  (temp-b1*100)%10;
+	
+	
+	int strike=0;
+	
+	if(a1 == b1 ){
+		strike++;	
+		
+	}
+	if(a2 == b2){
+		strike++;
+	}
+	if(a3 == b3){
+		strike++;
+	}
+	return strike;
+}
+
+
+
+int checkball(int target, int temp){
+	int a1 = target / 100;
+	int b1 = temp / 100;
+	int a2 = (target-a1*100)/10;
+	int b2 = (temp-b1*100)/10;
+	int a3 = (target-a1*100)%10;
+	int b3 =  (temp-b1*100)%10;
+	
+	
+	
+	int ball=0;
+	
+	if(a1 == b2){
+		ball++;	
+		if(  a1 == b3 ){
+			ball++;
+		}
+	}
+	if(a2 == b1){
+		ball++;	
+		if(  a2 == b3 ){
+			ball++;
+		}
+	}
+	if(a3 == b1){
+		ball++;	
+		if(  a3 == b2 ){
+			ball++;
+		}
+	}
+	return ball;
+}
+
+
+
+
+int main(){
+
+	for(int i=0;i<1001;i++){
+		arr[i] = 0;
+	}
+
+	int qcount;
+	int query;
+	int expectstrike;
+	int expectball;
+
+	scanf("%d",&qcount);
+	
+	for(int i =0;i<qcount;i++){
+		scanf("%d %d %d",&query,&expectstrike,&expectball);
+		for(int j=123;j<988;j++){
+			
+			
+			
+			if(j / 100 != (j-(j/100)*100)/10 !=(j-(j/100)*100)%10 != 0){
+			
+						
+							printf("%d\n",j);	
+						
+						
+				
+				}
+			}
+			
+		}
+		
+//	int ball = checkball(124,444);
+//cout << checkStrike(142,444) << endl;	
+//cout << checkball(124,444) << endl;
+//	cout << strike << endl;		
+//	cout << ball << endl;
+	return 0;
+}
