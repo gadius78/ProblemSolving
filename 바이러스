@@ -1,0 +1,90 @@
+#include<iostream>
+#include<cstdio>
+#include<cstdlib>
+#include<vector>
+#include<algorithm>
+
+using namespace std;
+bool visit[101]={false,};
+vector<int> v[101];
+
+int c =0;
+
+int dfs(int n){
+
+		if(n!=1){
+			c++;		
+		}
+	
+		visit[n] =true;
+//		cout << n <<"is detect" << endl;
+			
+		if(v[n].size()==0){
+			return 0;
+		}
+		else{
+			for(int i=0;i<v[n].size();i++){
+			int desti=v[n][i];
+			
+			if(visit[desti]==false)				
+			   dfs(desti);		
+					
+			
+						
+			}
+			return 0;		
+		}
+	
+}
+
+
+int main(){
+	
+	int coms,n;
+
+		scanf("%d\n",&coms);
+		scanf("%d",&n);
+		if(coms<0 ||coms>100){
+			return 0;
+		}
+		int t1,t2;
+		for(int i=0;i<n;i++){
+			
+			scanf(" %d %d",&t1,&t2);
+			
+			if(t1 >coms || t2>coms){
+				return 1;
+			}
+			else{
+				v[t1].push_back(t2);
+				v[t2].push_back(t1);	
+			}
+			
+		}
+		
+		/*
+		for(int i=0;i<n;i++){
+			int size = v[i].size();
+			vector<int>::iterator a = v[i].begin();
+			sort(a,a+size);
+		}
+		*/
+		
+		
+		for(int i=0;i<n;i++){
+			printf("%d :",i);
+			for(int j=0;j<v[i].size();j++){
+				cout << v[i][j] << " ";
+			}
+			cout <<'\n';
+		}
+		
+
+		//dfs(1);
+		for(int i=0;i<100;i++){
+			v[i].clear();
+		}
+		cout << c;
+		return 0;	
+	
+}
