@@ -1,0 +1,126 @@
+#include<cstdio>
+#include<iostream>
+#include<vector>
+ 
+using namespace std;
+ 
+ 
+int black=0;
+int white=0;
+int map[11][11]={0,};
+ 
+bool visit_a[32];
+bool visit_cross[32];
+int dir[4] = {-1,-1,1,1};
+ 
+int dir2[4] = {-1,1,-1,1};
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+bool isNotRange(int x,int y,int N){
+    if(x<0 || y<0 || x>=N || y>=N){
+ 
+        return 1;
+ 
+    }
+    else{
+            return 0;
+    }
+ 
+}
+ 
+void solution(int x,int y,int N,int count){
+ 
+      if(black < count) black = count;
+ 
+    if(y>N){
+        x++;
+        if(x%2==0){
+            y = 2;
+        }
+        else{
+            y = 1;
+        }
+    }
+    if(x>N) return;
+ 
+    if(visit_a[x+y]==false && visit_cross[10+x-y] ==false && map[x][y] ==1 )
+    {
+        visit_a[x+y] = true;
+        visit_cross[10+x-y] = true;
+        solution(x,y+2,N,count+1);        
+        visit_a[x+y] = false;
+        visit_cross[10+x-y] = false;
+    }
+    solution(x,y+2,N,count);
+}
+ 
+void solution2(int x,int y,int N,int count){
+ 
+      if(white<count) white = count;
+ 
+    if(y>N){
+        x++;
+        if(x%2==0){
+            y = 1;
+        }
+        else{
+            y = 2;
+        }
+    }
+    if(x>N) return;
+ 
+    if(visit_a[x+y]==false && visit_cross[10+x-y] ==false && map[x][y] ==1 )
+    {
+        visit_a[x+y] = true;
+        visit_cross[10+x-y] = true;
+        solution2(x,y+2,N,count+1);        
+        visit_a[x+y] = false;
+        visit_cross[10+x-y] = false;
+    }
+    solution2(x,y+2,N,count);
+}
+ 
+ 
+ 
+int main(){
+    int N;
+    int t;
+    scanf("%d",&N);
+ 
+    for(int i=1;i<=N;i++){
+        for(int j=1;j<=N;j++){
+            scanf("%d",&map[i][j]);
+ 
+         //   map[i][j] = t;
+        }
+ 
+ 
+ 
+    }
+    
+    solution(1,1,N,0);
+//    cout << black<< endl;
+        
+    solution2(1,2,N,0);
+ //cout << white << endl;
+    /*
+    cout << endl; 
+    for(int i=1;i<=N;i++){
+        for(int j=1;j<=N;j++){
+            printf("%d ",map[i][j]);
+        }
+        cout << endl;
+    }
+    */
+    cout<< black+white <<endl;
+    return 0;
+ 
+ 
+ 
+}
