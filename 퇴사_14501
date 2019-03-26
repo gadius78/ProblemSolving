@@ -1,0 +1,52 @@
+#include<iostream>
+#include<vector>
+#include<algorithm>
+#include<numeric>
+
+
+using namespace std;
+
+vector<int> t;
+vector<int> p;
+vector<int> ans;
+
+int N;
+int max_value=0;
+
+void solution(int index,int sum){
+	if(index>N){
+			return;
+		}
+	if(index==N){
+		if(sum > max_value){
+			max_value = sum;
+		}
+		
+	}	
+	else{
+		if(index>N){
+			return;
+		}
+
+		for(int i=index;i<=t.size();i++){
+			solution(i+t[i],sum+p[i]); // 선택시 index는 t만큼 sum은 P만큼 
+			solution(i+1,sum); // 아무것도 선택한다고 다음 칸부터 볼때 
+		}
+		
+	}
+}
+
+int main(){
+
+	int t1,t2;
+	cin >> N;
+	
+	for(int i=0;i<N;i++){
+		cin >> t1 >> t2;
+		t.push_back(t1);
+		p.push_back(t2);
+	}
+	
+	solution(0,0);
+	cout << max_value;
+}
