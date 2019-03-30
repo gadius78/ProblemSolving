@@ -1,103 +1,78 @@
-     #include<cstdio>
 #include<iostream>
-#include<queue>
-#include<algorithm>
 #include<vector>
- 
+#include<algorithm>
+#include<queue>
+#include<cstdio>
+
 using namespace std;
- 
-queue< pair<int,int> > q;
-int map[26][26];
-vector<int> ans;
- 
- 
-int solution(int x,int y,int range){
-    if(map[x][y]==0) return 0;
- 
-    q.push(make_pair(x,y));
-    int now_x;
-    int now_y;
-    int count=0;
-    pair<int,int> temp;
-    while(!q.empty()){
-        temp = q.front();
-        q.pop();
-        now_x = temp.first;
-        now_y = temp.second;
-    
-        if(map[now_x][now_y]==1){
-            map[now_x][now_y] =0;
-            count++;
-        }
- 
-        /*===============================*/
-        if(now_x+1 < range && map[now_x+1][now_y] ==1){
-            map[now_x+1][now_y] =0;
-            count++;
-            q.push(make_pair(now_x+1,now_y));
-        }
-#if 1
-        if(now_x-1 >= 0 && map[now_x-1][now_y] ==1){
-            map[now_x-1][now_y] =0;
-            count++;
-            q.push(make_pair(now_x-1,now_y));
-        }
-        if(now_y+1 < range && map[now_x][now_y+1] ==1){
-            map[now_x][now_y+1] =0;
-            count++;
-            q.push(make_pair(now_x,now_y+1));
-        }
-        if(now_y-1 >= 0 && map[now_x][now_y-1] ==1){
-            map[now_x][now_y-1] =0;
-            count++;
-            q.push(make_pair(now_x,now_y-1));
-        }
-#endif
-    }
- 
-    return count;
+
+vector<int> temp;
+
+
+int map[30][30]={0,};
+bool visit[30][30]={false,};
+int N;
+
+queue<pair<int,int>> q;
+int dir[4][2]={{0,1},{0,-1},{1,0},{-1,0}};
+
+int bfs(int x,int y){
+	int cnt =0;
+
+	visit[x][y] = true;
+	q.push(make_pair(x,y));
+	cnt++;
+	while(!q.empty()){
+		pair<int,int> now = q.front();
+		q.pop();
+
+		for(int i=0;i<4;i++){
+			int dirx = now.first+dir[i][0];
+			int diry = now.second+dir[i][1];
+			if(visit[dirx][diry] ==false && map[dirx][diry] ==1){
+				visit[dirx][diry] = true;
+				q.push(make_pair(dirx,diry));
+				cnt++;
+
+			}
+		}
+
+	}
+	return cnt++;
+
 }
- 
 int main(){
- 
-    int N;
- 
-    scanf("%d",&N);
- 
-    for(int i=0;i<N;i++){
-        for(int j=0;j<N;j++){
-        scanf("%1d",&map[i][j]);
-        }
-    }
-    
- 
-    int value=0;
-    for(int i=0;i<N;i++){
-        for(int j=0;j<N;j++){
-            value = solution(i,j,N);
-            if(value !=0){
-                ans.push_back(value);
-            }
-            
-        }
-    }
- 
-//    cout <<    solution(0,2,N) << endl;
-    /*
-    cout << "======================================"<<endl;
-    for(int i=0;i<N;i++){
-        for(int j=0;j<N;j++){
-        printf("%1d",map[i][j]);
-        }
-        cout << endl;
-    }
-    */
-    cout << ans.size() << endl;
-    sort(ans.begin(),ans.end());
-    for(int i=0;i<ans.size();i++){
-        cout << ans[i] << endl;
-    }
- 
- 
-    return 0;
+	vector<int> ans;
+	cin >> N;
+	for(int i=0;i<N;i++){
+		for(int j=0;j<N;j++){
+			scanf(" %1d",&map[i][j]);	
+		}
+	}
+
+	for(int i=0;i<N;i++){
+		for(int j=0;j<N;j++){
+			
+			if(map[i][j]==1 && visit[i][j] ==false){
+				int temp = bfs(i,j);
+				ans.push_back(temp);
+			}
+		}
+	}
+	sort(ans.begin(),ans.end());
+	cout << ans.size() << endl;
+	for(vector<int>::iterator it=ans.begin();it!=ans.end();++it){
+		cout << *it << endl;
+	}
+	
+#if 0
+	// for print array
+	for(int i=0;i<N;i++){
+		for(int j=0;j<N;j++){
+			cout << map[i][j] << " ";	
+		}
+		cout << '\n';
+	}
+#endif
+	return 0;
 }
