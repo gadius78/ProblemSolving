@@ -16,6 +16,11 @@ int N;
 queue<pair<int,int>> q;
 int dir[4][2]={{0,1},{0,-1},{1,0},{-1,0}};
 
+bool isRange(int x, int y){
+    if(0<=x && x<N && 0<=y && y<N) return true;
+    else return false;    
+}
+
 int bfs(int x,int y){
 	int cnt =0;
 
@@ -29,7 +34,7 @@ int bfs(int x,int y){
 		for(int i=0;i<4;i++){
 			int dirx = now.first+dir[i][0];
 			int diry = now.second+dir[i][1];
-			if(visit[dirx][diry] ==false && map[dirx][diry] ==1){
+			if(visit[dirx][diry] ==false && map[dirx][diry] ==1 && isRange(dirx,diry)){
 				visit[dirx][diry] = true;
 				q.push(make_pair(dirx,diry));
 				cnt++;
