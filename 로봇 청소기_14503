@@ -1,0 +1,151 @@
+#include<iostream>
+#include<vector>
+#include<algorithm>
+#include<queue>
+#include<cstdio>
+
+
+
+using namespace std;
+
+int N, M;
+int r,c,d;
+int map[53][53]={0,};
+bool visit[53][53]={false,};
+int dir[4][4][2] = {
+
+	{{0,-1},{1,0},{0,1},{-1,0}},
+
+	{{-1,0},{0,-1},{1,0},{0,1}},
+
+	{{0,1},{-1,0},{0,-1},{1,0}},
+
+	{{1,0},{0,1},{-1,0},{0,-1}},
+
+};
+ 
+
+int dir2[4][4]={
+
+	{3,2,1,0},
+
+	{0,3,2,1},
+
+	{1,0,3,2},
+
+	{2,1,0,3},
+
+};//for turn map
+
+
+struct robot{
+	int x;
+	int y;
+	int direction;
+	robot(int a, int b, int c){
+		x =a;
+		y = b;
+		direction = c;
+	}
+};
+queue<robot> q;
+
+
+
+bool isRange(int x, int y){
+
+    if(0<=x && x<N && 0<=y && y<M) return true;
+
+    else return false;    
+
+} 
+
+void bfs(){
+
+	visit[r][c] = true;
+
+	q.push(robot(r,c,d));
+
+	int cnt=0;
+
+	while(!q.empty()){
+
+		robot now= q.front();
+
+		q.pop();
+
+		int n_x = now.x;
+
+		int n_y = now.y;
+
+		int n_d = now.direction;
+
+		cnt++;
+
+ 
+
+	//	cout << n_x << " / " << n_y <<" / " <<n_d<<endl;
+		
+		bool fail_flag = true;
+
+		for(int i=0;i<4;i++){
+
+			int next_x = n_x + dir[n_d][i][0];
+			int next_y = n_y + dir[n_d][i][1];
+
+			if(visit[next_x][next_y] ==false && map[next_x][next_y]!=1){
+
+				visit[next_x][next_y] =true;
+				q.push(robot(next_x,next_y,dir2[n_d][i]));
+				fail_flag = false;
+				break;				
+
+			}
+
+		}
+
+ 		
+ 		if(fail_flag==true){
+		
+			int bx =n_x - dir[n_d][3][0];
+			int by =n_y - dir[n_d][3][1];
+
+			if(map[bx][by]==0){
+				q.push(robot(bx,by,n_d));
+				cnt--;
+			}
+			else{
+				break;
+			}
+		}
+	}
+	cout <<cnt;
+
+}
+ 
+
+int main(){
+
+	cin >> N >> M >> r >> c >> d ;
+
+	
+
+	for(int i=0;i<N;i++){
+
+		for(int j=0;j<M;j++){
+
+			cin >> map[i][j];
+
+		}
+
+	}
+
+ 
+
+	bfs();
+
+ 
+
+	return 0;
+
+}
