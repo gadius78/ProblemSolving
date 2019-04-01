@@ -1,0 +1,168 @@
+#include<iostream>
+#include<vector>
+#include<numeric>
+#include<algorithm>
+#include<queue>
+#include<memory.h>
+
+using namespace std;
+
+vector<int> graph[1001];
+queue<int> q;
+
+bool visit[1001]={false,};
+
+
+void dfs(int now){
+	visit[now] = true;
+	cout << now << " ";
+	int num_child = graph[now].size();
+	for(int i=0;i<num_child ;i++){
+		if(!visit[graph[now][i]] && graph[now][i]!=0){
+			dfs(graph[now][i]);
+		
+		}
+	}
+
+}
+
+void bfs(int start){
+	visit[start] =true;
+	q.push(start);
+
+	
+	while(!q.empty()){
+		int front = q.front();
+		int num_child =graph[front].size(); 
+		q.pop();
+		cout << front << " ";
+
+		for(int i=0;i< num_child;i++){
+			if(!visit[graph[front][i]] && graph[front][i]!=0){
+				//cout <<"count push" << endl;
+				visit[graph[front][i]] = true;
+				q.push(graph[front][i]);
+			}
+		}
+	
+	}
+	
+
+
+}
+
+int main(){
+	int N,M,V;
+	int t1,t2;
+	cin >> N >> M >> V;	
+	for(int i=0;i<M;i++){
+		cin >> t1 >> t2;
+		graph[t1].push_back(t2);
+		graph[t2].push_back(t1);
+	}
+	for(int i=1;i<=N;i++){
+		sort(graph[i].begin(),graph[i].end());
+	
+	}
+
+	dfs(V);
+	cout << endl;
+	memset(visit,false,sizeof(visit));
+	bfs(V);
+	cout << endl;
+	//cout <<"N : " << N << endl;
+	//cout <<"M : " << M << endl;
+
+
+	return 0;
+}
+
+/*
+
+#include<iostream>
+#include<vector>
+#include<algorithm>
+#include<queue>
+#include<cstdio>
+
+using namespace std;
+
+vector<int> temp;
+
+
+int map[30][30]={0,};
+bool visit[30][30]={false,};
+int N;
+
+queue<pair<int,int>> q;
+int dir[4][2]={{0,1},{0,-1},{1,0},{-1,0}};
+
+bool isRange(int x, int y){
+    if(0<=x && x<N && 0<=y && y<N) return true;
+    else return false;    
+}
+
+int bfs(int x,int y){
+	int cnt =0;
+
+	visit[x][y] = true;
+	q.push(make_pair(x,y));
+	cnt++;
+	while(!q.empty()){
+		pair<int,int> now = q.front();
+		q.pop();
+
+		for(int i=0;i<4;i++){
+			int dirx = now.first+dir[i][0];
+			int diry = now.second+dir[i][1];
+			if(visit[dirx][diry] ==false && map[dirx][diry] ==1 && isRange(dirx,diry)){
+				visit[dirx][diry] = true;
+				q.push(make_pair(dirx,diry));
+				cnt++;
+
+			}
+		}
+
+	}
+	return cnt++;
+
+}
+int main(){
+	vector<int> ans;
+	cin >> N;
+	for(int i=0;i<N;i++){
+		for(int j=0;j<N;j++){
+			scanf(" %1d",&map[i][j]);	
+		}
+	}
+
+	for(int i=0;i<N;i++){
+		for(int j=0;j<N;j++){
+			
+			if(map[i][j]==1 && visit[i][j] ==false){
+				int temp = bfs(i,j);
+				ans.push_back(temp);
+			}
+		}
+	}
+	sort(ans.begin(),ans.end());
+	cout << ans.size() << endl;
+	for(vector<int>::iterator it=ans.begin();it!=ans.end();++it){
+		cout << *it << endl;
+	}
+	
+#if 0
+	// for print array
+	for(int i=0;i<N;i++){
+		for(int j=0;j<N;j++){
+			cout << map[i][j] << " ";	
+		}
+		cout << '\n';
+	}
+#endif
+	return 0;
+}
+
+
+
+*/
