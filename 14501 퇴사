@@ -1,0 +1,54 @@
+#include<iostream>
+#include<vector>
+#include<algorithm>
+#include<queue>
+
+using namespace std;
+
+
+int N;
+
+vector< pair<int,int> > v;
+queue< pair<int,int> > q;
+
+int mm=0;
+void dfs(int index,int accum){
+	if(index ==N){
+	    
+		if(accum>mm){
+			mm = accum;
+			//cout  << mm << endl;
+		}
+		return;
+	}	
+	// 선택쓰
+	if(index+v[index].first <N+1){
+		//cout << index+1 << "상담쓰" << " ";
+		dfs(index+v[index].first,accum+v[index].second);
+	}
+
+	// 안선택쓰
+	dfs(index+1,accum);
+
+}
+
+
+int main(){
+	cin >> N;
+	
+	int t1,t2;
+	for(int i=0;i<N;i++){
+		cin >> t1 >> t2;
+		v.push_back(make_pair(t1,t2));
+	}
+	dfs(0,0);
+
+#if 0
+	for(int i=0;i<N;i++){
+		cout << v[i].first <<" " << v[i].second << endl;
+	}
+#endif
+
+	cout  << mm << endl;
+	return 0;
+}
