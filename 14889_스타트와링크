@@ -1,0 +1,72 @@
+#include<algorithm>
+#include<iostream>
+#include<deque>
+#include<vector>
+#include<string>
+
+using namespace std;
+
+
+int N;
+int board[21][21] = {0,};
+vector<int> v;
+
+void solve() {
+
+	vector<int> v1;
+	vector<int> v2;
+
+	int min_cnt = 100000;
+  //using permutaion gathering start team and link team 
+  //{1,1,0,0} -> 1 is start team / 0 is link team
+	do {
+		
+		for (int i = 0; i < v.size(); i++) {
+			if (v[i] == 1) v1.push_back(i);
+			else {
+				v2.push_back(i);
+			}
+		}
+	
+		int sum1 = 0;
+		for (int i = 0; i < v1.size()-1; i++) {
+			for (int j = i+1; j < v1.size(); j++) {
+				sum1 += board[v1[i]][v1[j]] + board[v1[j]][v1[i]];
+			}
+		}
+
+		int sum2 = 0;
+		for (int i = 0; i < v2.size() - 1; i++) {
+			for (int j = i + 1; j < v2.size(); j++) {
+				sum2 += board[v2[i]][v2[j]] + board[v2[j]][v2[i]];
+			}
+		}
+		if (abs(sum1 - sum2) < min_cnt) min_cnt = abs(sum1 - sum2);
+
+		v1.clear();
+		v2.clear();
+
+	} while (next_permutation(v.begin(), v.end()));
+
+
+	cout << min_cnt << endl;
+
+
+}
+
+
+int main() {
+	scanf(" %d", &N);
+	for (int idx1 = 0; idx1 < N; idx1++) {
+		for (int idx2 = 0; idx2 < N; idx2++) {
+			scanf(" %d", &board[idx1][idx2]);
+		}
+	}
+
+	for (int i = 0; i < N / 2; i++) {
+		v.push_back(1);
+		v.push_back(0);
+	}
+	sort(v.begin(), v.end());
+	solve();
+}
