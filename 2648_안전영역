@@ -1,0 +1,103 @@
+#include<iostream>
+#include<vector>
+#include<algorithm>
+#include<queue> 
+#include<string>
+#include<fstream>
+
+
+using namespace std;
+
+int N;
+queue<pair<int, int>> q;
+
+int map[101][101] = { false, };
+int map2[101][101] = { false, };
+int visit[101][101] = { false, };
+vector<int> depth;
+int dir[4][2] = { {0,1},{1,0},{-1,0},{0,-1}, };
+
+void visit_init() {
+	for (int idx1 = 0; idx1 < N; idx1++) {
+		for (int idx2 = 0; idx2 < N; idx2++) {
+			visit[idx1][idx2] = false;
+			map2[idx1][idx2] = 0;
+		}
+	}
+
+}
+
+
+bool is_range(int x, int y) {
+	if (x < 0 || y < 0 || x >= N || y >= N) {
+		return false;
+	}
+	else {
+		return true;
+	}
+}
+
+void bfs(int x, int y, int target) {
+
+	q.push(make_pair(x, y));
+	visit[x][y] = true;
+	map2[x][y] = 77;
+	while (!q.empty()) {
+		pair<int, int> current = q.front();
+		q.pop();
+		int now_x = current.first;
+		int now_y = current.second;
+		for (int i = 0; i < 4; i++) {
+			int n_x = now_x + dir[i][0];
+			int n_y = now_y + dir[i][1];
+			if (is_range(n_x, n_y) && !visit[n_x][n_y]) {
+				visit[n_x][n_y] = true;
+				map2[n_x][n_y] = 77;
+				q.push(make_pair(n_x, n_y));
+			}
+		}
+	}
+
+}
+
+int main() {
+	scanf(" %d", &N);
+
+	for (int idx1 = 0; idx1 < N; idx1++) {
+		for (int idx2 = 0; idx2 < N; idx2++) {
+			scanf(" %d", &map[idx1][idx2]);
+			depth.push_back(map[idx1][idx2]);
+		}
+	}
+
+	int limit = *max_element(depth.begin(), depth.end());
+	int answer = 0;
+
+	for (int i = 0; i <= limit; i++) {
+		int temp_count = 0;
+
+		for (int idx1 = 0; idx1 < N; idx1++) {
+			for (int idx2 = 0; idx2 < N; idx2++) {
+				if (map[idx1][idx2] <= i) {
+					visit[idx1][idx2] = true;
+				}
+			}
+		}
+
+		for (int idx1 = 0; idx1 < N; idx1++) {
+			for (int idx2 = 0; idx2 < N; idx2++) {
+				if (visit[idx1][idx2] == false) {
+					bfs(idx1, idx2, i);
+					temp_count++;
+				}
+			}
+		}
+
+		if (answer < temp_count) answer = temp_count;
+
+		visit_init();
+	}
+	cout << answer << endl;
+
+	return 0;
+}
