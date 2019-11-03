@@ -1,0 +1,124 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include<iostream>
+#include<vector>
+#include<algorithm>
+#include<queue> 
+#include<deque>
+#include<string>
+
+
+
+using namespace std;
+
+int K;
+
+deque<int> q[4];
+bool visit[4] = { false, };
+int is_turn[4] = { 0, };
+
+void print_queue() {
+	for (int i = 0; i < 4; i++) {
+		for (int j = 0; j < 8; j++) {
+			printf("%d", q[i][j]);
+		}
+		cout << endl;
+	}
+
+}
+
+
+void turn_queue(int queue_num, int dir) {
+	if (dir == 1) {
+		int temp = q[queue_num].back();
+		q[queue_num].push_front(temp);
+		q[queue_num].pop_back();
+	}
+	else if (dir == -1) {
+		int temp = q[queue_num].front();
+		q[queue_num].push_back(temp);
+		q[queue_num].pop_front();
+	}
+
+}
+
+void rotate_check(int rot, int dir) {
+	//cout << "now is : " << rot << endl;
+	visit[rot] = true;
+	is_turn[rot] = dir;
+	if (rot + 1 < 4) {
+		if (q[rot + 1][6] != q[rot][2]) {
+		//	cout << rot + 1 << " / " << rot << "is differ" << endl;
+			if (!visit[rot + 1]) rotate_check(rot + 1, (-1) *dir);
+		}
+	}
+
+	if (rot - 1 >= 0) {
+		if (q[rot - 1][2] != q[rot][6]) {
+			//cout << rot - 1 << " / " << rot << "is differ" << endl;
+			if (!visit[rot - 1]) rotate_check(rot - 1, (-1) *dir);
+		}
+	}
+
+}
+
+
+int main() {
+	int temp = 0;
+	for (int i = 0; i < 4; i++) {
+		for (int j = 0; j < 8; j++) {
+			scanf("%1d", &temp);
+			q[i].push_back(temp);
+		}
+	}
+	scanf(" %d", &K);
+	int t1, t2;
+	for (int i = 0; i < K; i++) {
+		scanf(" %d %d", &t1, &t2);
+		rotate_check(t1-1,t2);
+
+#if 0
+		for (int j = 0; j < 4; j++) {
+			cout << "visit : " << visit[j] << " ";
+			cout << "is_turn" << is_turn[j] << endl;
+		}
+#endif
+
+#if 1
+		for (int j = 0; j < 4; j++) {
+			turn_queue(j, is_turn[j]);
+			
+		}
+
+#endif
+		//print_queue();
+
+		memset(visit, false, sizeof(visit));
+		memset(is_turn, 0, sizeof(is_turn));
+
+
+	}
+	int sum = 0;
+	for (int i = 0; i < 4; i++) {
+		switch (i) {
+			case 0:
+				if (q[i][0] == 0) sum += 0;
+				else if (q[i][0] == 1) sum += 1;
+				break;
+			case 1:
+				if (q[i][0] == 0) sum += 0;
+				else if (q[i][0] == 1) sum += 2;
+				break;
+			case 2:
+				if (q[i][0] == 0) sum += 0;
+				else if (q[i][0] == 1) sum += 4;
+				break;
+			case 3:
+				if (q[i][0] == 0) sum += 0;
+				else if (q[i][0] == 1) sum += 8;
+				break;
+		}
+	}
+	cout << sum;
+
+	return 0;
+}
