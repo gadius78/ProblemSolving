@@ -1,0 +1,144 @@
+#define _CRT_SECURE_NO_WARNINGS
+
+#include <string>
+#include <vector>
+#include <cmath>
+#include <cstdlib>
+#include <algorithm>
+#include <iostream>
+using namespace std;
+
+
+int N, M;
+int x, y;
+int K;
+
+int map[22][22];
+
+vector<int> command;
+
+int dir[4][2] = { {0,1}, {0,-1} ,{-1,0} ,{1,0} };
+
+
+typedef struct mbc {
+	int a1;
+	int a2;
+	int a3;
+	int a4;
+	int a5;
+	int a6; // bottom
+	void init(int a, int b, int c, int d, int e, int f) {
+		a1 = a;
+		a2 = b;
+		a3 = c;
+		a4 = d;
+		a5 = e;
+		a6 = f;
+	}
+	void turn(int dir){
+		int t1 = a1;
+		int t2 = a2;
+		int t3 = a3;
+		int t4 = a4;
+		int t5 = a5;
+		int t6 = a6;
+		switch (dir) {
+			case 1:
+				a1 = t4;
+				a2 = t2;
+				a3 = t1;
+				a4 = t6;
+				a5 = t5;
+				a6 = t3;
+			//	cout << 1 << endl;
+				break;
+			case 2:
+				a1 = t3;
+				a2 = t2;
+				a3 = t6;
+				a4 = t1;
+				a5 = t5;
+				a6 = t4;
+			//	cout << 2 << endl;
+				break;
+			case 3:
+				a1 = t5;
+				a2 = t1;
+				a3 = t3;
+				a4 = t4;
+				a5 = t6;
+				a6 = t2;
+			//	cout << 3 << endl;
+				break;
+			case 4:
+				a1 = t2;
+				a2 = t6;
+				a3 = t3;
+				a4 = t4;
+				a5 = t1;
+				a6 = t5;
+			//	cout << 4 << endl;
+				break;
+		
+		};
+		if (map[x][y] == 0) {
+			map[x][y] = a6;
+		}
+		else {
+			a6 = map[x][y];
+			map[x][y] = 0;
+		}
+
+		cout << a1 << endl;
+
+	}
+
+
+}MBC;
+
+MBC dice;
+
+
+
+
+int main() {
+	dice.init(0, 0, 0, 0, 0, 0);
+
+	scanf(" %d %d %d %d %d",&N, &M, &x, &y, &K);
+	for (int i = 0; i < N; i++) {
+		for (int j = 0; j < M; j++) {
+			scanf(" %d", &map[i][j]);
+		}
+	}
+
+	int temp;
+	for (int i = 0; i < K; i++) {
+		scanf(" %d", &temp);
+		command.push_back(temp);
+	}
+
+#if 0
+	for (int i = 0; i < K; i++) {
+		cout << command[i] << endl;
+	}
+#endif 
+	//cout << "############################" << endl;
+	for (int i = 0; i < command.size(); i++) {
+		int now_command = command[i];
+
+		int next_x = x + dir[now_command-1][0];
+		int next_y = y + dir[now_command-1][1];
+
+		if (next_x >= 0 && next_x < N && next_y  >= 0 && next_y < M) {
+			x = next_x;
+			y = next_y;
+
+		//	cout << "point : " << x << " / " << y << endl;
+			dice.turn(now_command);
+
+		}
+
+	}
+
+
+}
